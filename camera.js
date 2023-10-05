@@ -8,19 +8,27 @@ function on_cam_success(stream) {
 }
 
 function on_cam_error(err) {
-  alert("error." + err.message);
+  alert("Eroare: " + err.message);
 }
 
-var constrains = { audio: false, video: true };
+var constraints = { audio: false, video: { width: 1280, height: 720 } }; // Setează dimensiunile dorite pentru video
 navigator.mediaDevices
-  .getUserMedia(constrains)
+  .getUserMedia(constraints)
   .then(on_cam_success)
   .catch(on_cam_error);
 
 function capteaza() {
-  var c = document.getElementById("canvas");
-  c.width = video.width;
-  c.height = video.height;
-  var ctx = c.getContext("2d");
-  ctx.drawImage(video, 0, 0, 640, 480);
+  var canvas = document.getElementById("canvas");
+  canvas.width = 720;
+  canvas.height = 1280;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(video, 0, 0, 720, 1280);
+
+  // Crează o imagine nouă din canvas
+  var newImage = new Image();
+  newImage.src = canvas.toDataURL("image/jpeg");
+
+  // Afișează imaginea în lista de imagini
+  var imageList = document.getElementById("image-list");
+  imageList.appendChild(newImage);
 }
